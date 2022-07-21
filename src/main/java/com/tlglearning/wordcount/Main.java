@@ -1,27 +1,32 @@
 package com.tlglearning.wordcount;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 public class Main {
 
-  public static final String TEST_FINAL_NAME = "hound-of-the-baskervilles.txt"; //TIP this constant was by clicking on file name > Refactor> Extract > Constant > Then change the name and create.
+  public static final String TEST_FIlE_NAME = "hound-of-the-baskervilles.txt"; //TIP this constant was by clicking on file name > Refactor> Extract > Constant > Then change the name and create.
 
-  public static void main(String[] args) throws IOException, URISyntaxException {
-    //NOTE at runtime it won't be in classloarder
-    //Use classloader to look at classpath and get resources
+  public static void main(String[] args) throws IOException {
 
-    URI uri = Main.class.getClassLoader().getResource(TEST_FINAL_NAME).toURI();
-    Path path = Paths.get(uri);//NOTE this gets the URI and creates an instance of path
-    String text = Files.readString(path); //NOTE Reads the contents of a file into a string
-    WordCounter counter = new WordCounter(text);
-    //TODO Do something with counter.
-    System.out.println(counter);
+    try (
+        //NOTE all of the reference types below must implement Closeable so that it closes resources when code stops.
+        InputStream input = Main.class.getClassLoader().getResourceAsStream(TEST_FIlE_NAME);
+        Reader reader = new InputStreamReader(input); //NOTE Use the general Type for the reference type then the specific class for the instance
+        BufferedReader buffer = new BufferedReader(reader) //TIP you don't need a semi colon on the last param.
+    ) {
+        WordCounter counter = new WordCounter();
+        String line;
+        while((line = buffer.readLine()) != null){
+          //TODO Pass line to a method of WordCounter.
+          counter.add(line);
+        }
+        //TODO Do something with the WordCounter.
+      System.out.println(counter);
+    }
+
   }
-
 }
