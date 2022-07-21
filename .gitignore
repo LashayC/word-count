@@ -1,0 +1,12 @@
+.idea/
+#Holds metadata
+.gradle/
+#Metadata that gradle makes when working on project. This is made when working on project to you don't need it
+build/
+#The slash at the end says ignore everything in the direcoty named build. Without the slash the name includes files
+
+*.iml
+# * is a wildcard. It ignores all files that have the file ending iml
+
+.DS_Store
+#A file on OSX used to keep track on files of a directory. Not needed bc OSX will create this as needed.
