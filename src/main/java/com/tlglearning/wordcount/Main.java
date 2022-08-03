@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class Main {
 
@@ -18,14 +21,24 @@ public class Main {
         Reader reader = new InputStreamReader(input); //NOTE Use the general Type for the reference type then the specific class for the instance
         BufferedReader buffer = new BufferedReader(reader) //TIP you don't need a semi colon on the last param.
     ) {
-        WordCounter counter = new WordCounter();
-        String line;
-        while((line = buffer.readLine()) != null){
-          //TODO Pass line to a method of WordCounter.
-          counter.add(line);
-        }
-        //TODO Do something with the WordCounter.
-      System.out.println(counter);
+      WordCounter counter = new WordCounter();
+      String line;
+      while ((line = buffer.readLine()) != null) {
+        //TODO Pass line to a method of WordCounter.
+        counter.add(line);
+      }
+      //TODO Do something with the WordCounter.
+//      System.out.println(counter);
+
+      counter
+          .getCounts()
+          .entrySet()
+          .stream()
+          .sorted(Comparator.comparing(Entry<String, Integer>::getValue).reversed())
+          .limit(10)
+          .forEach((entry) -> System.out.println(entry));
+
+
     }
 
   }
